@@ -1,0 +1,56 @@
+﻿using NLayer.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+
+namespace NLayer.Repository
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+
+        }
+
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Discount> Discouts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<CustomerType> CustomerTypes { get; set; }
+        //public DbSet<CustomerCustomerType> CustomerCustomerTypes { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<ProductFeature> ProductFeatures { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<ProductFeature>().HasData(new ProductFeature()
+            {
+                Id = 1,
+                Color = "Kırmızı",
+                Height = 100,
+                Width = 200,
+                ProductId = 1
+            },
+            new ProductFeature()
+            {
+                Id = 2,
+                Color = "Mavi",
+                Height = 300,
+                Width = 500,
+                ProductId = 2
+            });
+
+            base.OnModelCreating(modelBuilder);
+        }
+    }
+}
